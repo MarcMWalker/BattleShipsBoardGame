@@ -22,7 +22,14 @@ void Board::setBoard() {
 		}
 	}
 }
+
+void Board::updateBoard(std::string playermMarkers[10][10]) {
+
+}
+
 void Board::printBoard() {
+	std::cout << "Map:\n";
+	std::cout << "-------------------------------------------------\n\n";
 	for (int i{ 0 }; i < 11; ++i) {
 		for (int j{ 1 }; j < 12; ++j) {
 			std::cout << m_board[i][j - 1];
@@ -30,5 +37,23 @@ void Board::printBoard() {
 		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++\n";
 	}
 }
+
+void Board::printInstructions() {
+	std::cout << "-------------------------------------------------\n";
+	std::cout << "Instructions for Battleships:\n";
+	std::cout << "-------------------------------------------------\n";
+	std::cout << "1: Arrange your ship fleet on the grid.\n";
+	std::cout << "2: Take turns firing at the other player.\n";
+	std::cout << "3: Player that sinks all their opponent ships wins!\n";
+	std::cout << "-------------------------------------------------\n";
+	std::cout << "Fleet selection:\n";
+	std::cout << "1x Aircraft Carrier (5 tiles)\n";
+	std::cout << "1x Battleship (4 tiles)\n";
+	std::cout << "1x Cruiser (3 tiles)\n";
+	std::cout << "2x Destroyer (2 tiles)\n";
+	std::cout << "2x Submarine (1 tile)\n";
+	std::cout << "-------------------------------------------------\n";
+}
+
 Board::~Board() {
 }
