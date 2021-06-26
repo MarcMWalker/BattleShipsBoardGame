@@ -5,15 +5,16 @@
 
 class Player{
 private:
-	std::string m_shipGrid[10][10];
+	//std::string m_shipGrid[10][10];
 	bool m_victory{};
 	short m_shipTotal{};
 public:
-	bool hasWon(bool victoryCheck);
-	short getShipTotal() const;
-	void getVictory();
+	std::string m_shipGrid[10][10];
+	//bool hasWon(bool victoryCheck);
+	//short getShipTotal() const;
+	//void getVictory()const;
 	void playerInstructions();
-	std::string getGrid() const;
+	//std::string getGrid() const;
 	void gridPlacement(int shipSize);
 	void playerShipChoice();
 	void updatePlayerGrid(char column, int row);

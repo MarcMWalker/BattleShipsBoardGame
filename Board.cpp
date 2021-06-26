@@ -1,7 +1,7 @@
 #include "Board.h"
 #include <iostream>
 
-Board::Board() : m_board{}, m_boardMarkers{}, m_filled{} {
+Board::Board() : m_board{}, m_playerMarkers{}, m_filled{} {
 }
 
 void Board::setBoard() {
@@ -23,11 +23,17 @@ void Board::setBoard() {
 	}
 }
 
-void Board::updateBoard(std::string playermMarkers[10][10]) {
-
+void Board::updateBoard() {
+	for (int col{ 0 }; col < 11; ++col) {
+		for (int row{ 0 }; row < 11; ++row) {
+			if (m_playerMarkers[col][row] == " X |") {
+				m_board[col+1][row+1] = " X |";
+			}
+		}
+	}
 }
 
-void Board::printBoard() {
+void Board::printBoard() const {
 	std::cout << "Map:\n";
 	std::cout << "-------------------------------------------------\n\n";
 	for (int i{ 0 }; i < 11; ++i) {
@@ -38,7 +44,7 @@ void Board::printBoard() {
 	}
 }
 
-void Board::printInstructions() {
+void Board::printInstructions() const{
 	std::cout << "-------------------------------------------------\n";
 	std::cout << "Instructions for Battleships:\n";
 	std::cout << "-------------------------------------------------\n";

@@ -16,5 +16,10 @@ int main() {
 	newBoard.printBoard();
 	Player player1;
 	player1.playerShipChoice();
+	if (player1.m_shipGrid[0][0] == "X") {
+		newBoard.m_playerMarkers[0][0] = " X |";
+	}
+	newBoard.updateBoard();
+	newBoard.printBoard();
 	return 0;
 }

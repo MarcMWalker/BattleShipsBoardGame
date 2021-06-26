@@ -61,11 +61,9 @@ void Player::updatePlayerGrid(char column, int row) {
 	m_shipGrid[col][row-1] = 'X';
 }
 
-std::string Player::getGrid() const {
-	
-	
-	return m_shipGrid[10][10];
-}
+/*std::string Player::getGrid() const {
+	return m_shipGrid[11][11];
+}*/
 
 Player::~Player() {
 }
