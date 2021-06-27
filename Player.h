@@ -8,15 +8,15 @@ private:
 	bool m_victory{};
 	short m_shipTotal{};
 public:
+	Player();
 	std::string m_shipGrid[11][11];
 	//bool hasWon(bool victoryCheck);
-	//short getShipTotal() const;
 	//void getVictory()const;
 	void playerInstructions();
 	void gridPlacement(int shipSize);
 	void playerShipChoice();
-	void updatePlayerGrid(char column, int row);
-	Player();
+	void updatePlayerGrid(char column, short row);
+	bool checkValidPlacements(char letter, short number, int shipSize);
 	~Player();
 };
 
