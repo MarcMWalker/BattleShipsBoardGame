@@ -12,7 +12,7 @@ void Board::setBoard() {
 	m_board[4][0] = "4 |", m_board[5][0] = "5 |", m_board[6][0] = "6 |", m_board[7][0] = "7 |", 
 	m_board[8][0] = "8 |", m_board[9][0] = "9 |", m_board[10][0] = "10|";
 
-	for (int i{ 1 }; i < 12; ++i) {
+	for (int i{ 1 }; i < 11; ++i) {
 		newString = (m_letters.at(i - 1) + space);
 		m_board[0][i] = newString;
 	}

@@ -6,7 +6,7 @@
 
 class Board{
 private:
-	std::string m_board[13][13];
+	std::string m_board[11][11];
 	bool m_filled[11][11];
 	std::string m_letters{"ABCDEFGHIJ "};
 public:

@@ -9,7 +9,7 @@ private:
 	bool m_victory{};
 	short m_shipTotal{};
 public:
-	std::string m_shipGrid[10][10];
+	std::string m_shipGrid[11][11];
 	//bool hasWon(bool victoryCheck);
 	//short getShipTotal() const;
 	//void getVictory()const;

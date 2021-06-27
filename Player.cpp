@@ -58,7 +58,7 @@ void Player::gridPlacement(int shipSize) {
 
 void Player::updatePlayerGrid(char column, int row) {
 	int col = static_cast<int>(column - 97);
-	m_shipGrid[col][row-1] = 'X';
+	m_shipGrid[row-1][col] = 'X';
 }
 
 /*std::string Player::getGrid() const {
