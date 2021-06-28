@@ -16,7 +16,9 @@ public:
 	void gridPlacement(int shipSize);
 	void playerShipChoice();
 	void updatePlayerGrid(char column, short row);
-	bool checkValidPlacements(char letter, short number, int shipSize);
+	bool checkValidFirstPlacement(char letter, short number, int shipSize);
+	bool checkValidSecondPlacement(char letter, short number, char previousLet, short previousNum);
+	void printInstruction(short tilePlacementTotal)const;
 	~Player();
 };
 

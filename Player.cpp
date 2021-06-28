@@ -86,12 +86,14 @@ void Player::gridPlacement(int shipSize) {
 	}
 
 	else {
-		short tilePlaced{ 1 };
-		std::cout << "\nWhere would you like to place the start of this ship: \n";
+		short tilePlaced{ 0 };
+		short firstTileCopyNum{};
+		char firstTileCopyLetter{};
+		
 		while (tilePlaced < 2) {
-			
-			bool correct{ false };
-			while (correct != true) {
+			printInstruction(tilePlaced);
+			bool letCorrect{ false };
+			while (letCorrect != true) {
 				std::cout << "Letter: ";
 				char letter{};
 				std::cin >> letter;
@@ -104,8 +106,9 @@ void Player::gridPlacement(int shipSize) {
 				}
 				else {
 					bool numCorrect{ false };
-					while (numCorrect != true) {
-						short num{};
+					short num{};
+					letCorrect = true;
+					while (numCorrect != true && letCorrect == true) {
 						std::cout << "Number: ";
 						std::cin >> num;
 						std::cin.ignore(INT_MAX, '\n');
@@ -115,43 +118,45 @@ void Player::gridPlacement(int shipSize) {
 							std::cout << "**Invalid number, must be a number between 1-10**\n";
 						}
 
-						else if (tilePlaced == 1) {
-							if (checkValidPlacements(letter, num, shipSize) == true) {
+						else if (tilePlaced == 0) {
+							if (checkValidFirstPlacement(letter, num, shipSize) == true) {
 								updatePlayerGrid(letter, num);
 								numCorrect = true;
+								firstTileCopyLetter = toupper(letter);
+								firstTileCopyNum = num;
+								tilePlaced++;
 							}
 							else {
 								std::cout << "The ship will not be able to fit here";
 							}
 						}
 						//create new funtion to check possible allowed placements
-						else if (tilePlaced == 2) {
-							if (checkValidPlacements(letter, num, shipSize) == true) {
+						else if (tilePlaced == 1) {
+							if (checkValidSecondPlacement(letter, num, firstTileCopyLetter, firstTileCopyNum) == true) {
 								updatePlayerGrid(letter, num);
 								numCorrect = true;
+								letCorrect = true;
+								tilePlaced++;
 							}
 							else {
-								std::cout << "The ship will not be able to fit here";
+								std::cout << "Not allowed to be placed here, ship must be placed in a straight line...\n";
+								numCorrect = false;
+								letCorrect = false;
 							}
 							//fill up tiles to the second tile and update grid after
-							correct = true;
 						}
 					}
-					tilePlaced++;
 				}
 			}
 		}
 	}
 }
 
-bool Player::checkValidPlacements(char letter, short number, int shipSize) {
+bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 	int col = static_cast<int>(letter - 65);
 	int check{ col - shipSize };
 
-	//Sort of works left and right checks in limited capacity, but needs much more code additions
-
-	//check up,down,right,left directions. if ok then a move can be made
-	//works correctly for left side <---
+	//check left side
 	if ((col - shipSize) > 0 && m_shipGrid[number-1][col] != "X") {
 		for (int i{ shipSize }; i > 0; --i) {
 			if (m_shipGrid[i][col] == "X") {
@@ -159,6 +164,7 @@ bool Player::checkValidPlacements(char letter, short number, int shipSize) {
 			}
 		}
 	}
+
 	//check right side
 	if ((col + shipSize) < 10 && m_shipGrid[number - 1][col] != "X") {
 		for (int i{ 0 }; i < shipSize; ++i) {
@@ -167,12 +173,47 @@ bool Player::checkValidPlacements(char letter, short number, int shipSize) {
 			}
 		}
 	}
+	//check up
+	if ((number - shipSize > 0) && m_shipGrid[number - shipSize][col] != "X") {
+		for (int i{ 0 }; i < shipSize; ++i) {
+			if (m_shipGrid[number-1][i] == "X") {
+				return false;
+			}
+		}
+	}
+	//check down
+	if ((number + shipSize < 10) && m_shipGrid[number - shipSize][col] != "X") {
+		for (int i{ 0 }; i < shipSize; ++i) {
+			if (m_shipGrid[number - 1][i] == "X") {
+				return false;
+			}
+		}
+	}
+
 	return true;
+}
+
+bool Player::checkValidSecondPlacement(char letter, short number, char previousLet, short previousNum) {
+	if (letter == previousLet || number == previousNum) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 void Player::updatePlayerGrid(char column, short row) {
 	int col = static_cast<int>(column - 65);
 	m_shipGrid[row-1][col] = 'X';
+}
+
+void Player::printInstruction(short tilePlacementTotal) const {
+	if (tilePlacementTotal == 0) {
+		std::cout << "Where would you like to place the First ship marker...\n";
+	}
+	else if (tilePlacementTotal == 1) {
+		std::cout << "Where would you like to place the Second ship marker...\n";
+	}
 }
 
 Player::~Player() {
