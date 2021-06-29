@@ -137,6 +137,7 @@ void Player::gridPlacement(int shipSize) {
 								updatePlayerGrid(letter, num);
 								numCorrect = true;
 								letCorrect = true;
+								fillInnerPositions(letter, num, firstTileCopyLetter, firstTileCopyNum,shipSize, shipDirection);
 								tilePlaced++;
 							}
 							else {
@@ -209,7 +210,27 @@ void Player::updatePlayerGrid(char column, short row) {
 }
 
 void Player::fillInnerPositions(char letter, short number, char previousLet, short previousNum, int shipSize, Direction direction) {
-
+	int col = static_cast<int>(previousLet - 65);
+	if (direction == Direction::Right) {
+		for (int i{ 1 }; i < shipSize; ++i) {
+			m_shipGrid[previousNum-1][col+i] = 'X';
+		}
+	}
+	else if (direction == Direction::Left) {
+		for (int i{ 1 }; i < shipSize; ++i) {
+			m_shipGrid[previousNum - 1][col - i] = 'X';
+		}
+	}
+	else if (direction == Direction::Up) {
+		for (int i{ 1 }; i < shipSize; ++i) {
+			m_shipGrid[(previousNum - i)][col] = 'X';
+		}
+	}
+	else if (direction == Direction::Down) {
+		for (int i{ 0 }; i < shipSize-1; ++i) {
+			m_shipGrid[(previousNum + i)][col] = 'X';
+		}
+	}
 }
 
 void Player::setDirection(char letter, short number, char previousLet, short previousNum, Direction& direction){
@@ -219,10 +240,10 @@ void Player::setDirection(char letter, short number, char previousLet, short pre
 	else if (previousLet < letter) {
 		direction = Direction::Right;
 	}
-	else if (previousNum < number) {
+	else if (previousNum > number) {
 		direction = Direction::Up;
 	}
-	else if (previousNum > number) {
+	else if (previousNum < number) {
 		direction = Direction::Down;
 	}
 }
