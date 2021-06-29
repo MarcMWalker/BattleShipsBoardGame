@@ -89,7 +89,7 @@ void Player::gridPlacement(int shipSize) {
 		short tilePlaced{ 0 };
 		short firstTileCopyNum{};
 		char firstTileCopyLetter{};
-		
+		Direction shipDirection{ Direction::None };
 		while (tilePlaced < 2) {
 			printInstruction(tilePlaced);
 			bool letCorrect{ false };
@@ -133,6 +133,7 @@ void Player::gridPlacement(int shipSize) {
 						//create new funtion to check possible allowed placements
 						else if (tilePlaced == 1) {
 							if (checkValidSecondPlacement(letter, num, firstTileCopyLetter, firstTileCopyNum) == true) {
+								setDirection(letter, num, firstTileCopyLetter, firstTileCopyNum, shipDirection);
 								updatePlayerGrid(letter, num);
 								numCorrect = true;
 								letCorrect = true;
@@ -206,6 +207,26 @@ void Player::updatePlayerGrid(char column, short row) {
 	int col = static_cast<int>(column - 65);
 	m_shipGrid[row-1][col] = 'X';
 }
+
+void Player::fillInnerPositions(char letter, short number, char previousLet, short previousNum, int shipSize, Direction direction) {
+
+}
+
+void Player::setDirection(char letter, short number, char previousLet, short previousNum, Direction& direction){
+	if (previousLet > letter) {
+		direction = Direction::Left;
+	}
+	else if (previousLet < letter) {
+		direction = Direction::Right;
+	}
+	else if (previousNum < number) {
+		direction = Direction::Up;
+	}
+	else if (previousNum > number) {
+		direction = Direction::Down;
+	}
+}
+
 
 void Player::printInstruction(short tilePlacementTotal) const {
 	if (tilePlacementTotal == 0) {

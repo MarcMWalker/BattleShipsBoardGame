@@ -7,6 +7,7 @@ class Player{
 private:
 	bool m_victory{};
 	short m_shipTotal{};
+	enum class Direction{Up, Down, Right, Left, None};
 public:
 	Player();
 	std::string m_shipGrid[11][11];
@@ -19,6 +20,8 @@ public:
 	bool checkValidFirstPlacement(char letter, short number, int shipSize);
 	bool checkValidSecondPlacement(char letter, short number, char previousLet, short previousNum);
 	void printInstruction(short tilePlacementTotal)const;
+	void fillInnerPositions(char letter, short number, char previousLet, short previousNum, int shipSize, Direction direction);
+	void setDirection(char letter, short number, char previousLet, short previousNum, Direction &direction);
 	~Player();
 };
 
