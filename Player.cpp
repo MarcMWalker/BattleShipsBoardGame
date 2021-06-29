@@ -132,7 +132,7 @@ void Player::gridPlacement(int shipSize) {
 						}
 						//create new funtion to check possible allowed placements
 						else if (tilePlaced == 1) {
-							if (checkValidSecondPlacement(letter, num, firstTileCopyLetter, firstTileCopyNum) == true) {
+							if (checkValidSecondPlacement(letter, num, firstTileCopyLetter, firstTileCopyNum, shipSize) == true) {
 								setDirection(letter, num, firstTileCopyLetter, firstTileCopyNum, shipDirection);
 								updatePlayerGrid(letter, num);
 								numCorrect = true;
@@ -145,7 +145,6 @@ void Player::gridPlacement(int shipSize) {
 								numCorrect = false;
 								letCorrect = false;
 							}
-							//fill up tiles to the second tile and update grid after
 						}
 					}
 				}
@@ -195,13 +194,41 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 	return true;
 }
 
-bool Player::checkValidSecondPlacement(char letter, short number, char previousLet, short previousNum) {
+bool Player::checkValidSecondPlacement(char letter, short number, char previousLet, short previousNum, int shipSize) {
+	//bit messy atm, but works currently with left and right limits
+	int test{ previousLet - (letter+1) };
+	int test2{ test = -test };
+
+	if ((test) == -shipSize) {
+		std::cout << "Ship size correct\n";
+		//return true;
+	}
+
+	else if ((test2) == shipSize) {
+		std::cout << "Ship size correct\n";
+		//return true;
+	}
+	else if ((test-=2) == -shipSize) {
+		std::cout << "Ship size correct\n";
+		//return true;
+	}
+	else if ((test2 += 2) == shipSize) {
+		std::cout << "Ship size correct\n";
+		//return true;
+	}
+
+	else {
+		std::cout << "Incorrect ship size...\n";
+		return false;
+	}
+	
 	if (letter == previousLet || number == previousNum) {
 		return true;
 	}
 	else {
 		return false;
 	}
+
 }
 
 void Player::updatePlayerGrid(char column, short row) {
