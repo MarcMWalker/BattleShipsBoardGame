@@ -20,23 +20,28 @@ void Player::playerInstructions() {
 }
 
 void Player::playerShipChoice() {
+	
 	playerInstructions();
 	std::cout << "Ship choice: ";
 	char choice{};
 	std::cin >> choice;
-	
+
 	//add more ships later when check completed
 	switch (toupper(choice)) {
 	case 'A':
 		gridPlacement(5);
+		m_shipTotal--;
 		break;
 	case 'S':
 		gridPlacement(1);
+		m_shipTotal--;
 		break;
 	default:
 		std::cout << "Incorrect input, try again\n";
 		break;
 	}
+	//std::cin.ignore(INT_MAX, '\n');
+	//std::cin.clear();
 }
 
 //need to add more logic here to avoid chance to go beyond bounds and that all player placements + size will not result in missing ships
@@ -64,17 +69,10 @@ void Player::gridPlacement(int shipSize) {
 					std::cin >> num;
 					std::cin.ignore(INT_MAX, '\n');
 					std::cin.clear();
+
 					if (num < 1 || num > 10) {
 						std::cout << "**Invalid number, must be a number between 1-10**\n";
 					}
-
-					//Check to see if spot already filled by a ship part
-					/*
-					int col = static_cast<int>(letter - 65);
-					if (m_shipGrid[num - 1][col] == "X") {
-						std::cout << "**This spot is already taken**\n";
-					}*/
-
 					else {
 						updatePlayerGrid(letter, num);
 						numCorrect = true;
@@ -141,7 +139,7 @@ void Player::gridPlacement(int shipSize) {
 								tilePlaced++;
 							}
 							else {
-								std::cout << "Not allowed to be placed here, ship must be placed in a straight line...\n";
+								std::cout << "Not allowed to be placed here, ship must be placed in a straight line and be " << shipSize << " sections long...\n";
 								numCorrect = false;
 								letCorrect = false;
 							}
@@ -198,23 +196,33 @@ bool Player::checkValidSecondPlacement(char letter, short number, char previousL
 	//bit messy atm, but works currently with left and right limits
 	int test{ previousLet - (letter+1) };
 	int test2{ test = -test };
+	int test3{ previousNum - number };
+	int test4{ number - previousNum };
 
 	if ((test) == -shipSize) {
 		std::cout << "Ship size correct\n";
-		//return true;
+		return true;
 	}
 
 	else if ((test2) == shipSize) {
 		std::cout << "Ship size correct\n";
-		//return true;
+		return true;
 	}
 	else if ((test-=2) == -shipSize) {
 		std::cout << "Ship size correct\n";
-		//return true;
+		return true;
 	}
 	else if ((test2 += 2) == shipSize) {
 		std::cout << "Ship size correct\n";
-		//return true;
+		return true;
+	}
+	else if ((test3 += 1) == shipSize) {
+		std::cout << "Ship size correct\n";
+		return true;
+	}
+	else if ((test4 -= 1) == -shipSize) {
+		std::cout << "Ship size correct\n";
+		return true;
 	}
 
 	else {
@@ -283,6 +291,10 @@ void Player::printInstruction(short tilePlacementTotal) const {
 	else if (tilePlacementTotal == 1) {
 		std::cout << "Where would you like to place the Second ship marker...\n";
 	}
+}
+
+short Player::getShipTotal()const {
+	return m_shipTotal;
 }
 
 Player::~Player() {

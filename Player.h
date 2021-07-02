@@ -12,7 +12,7 @@ public:
 	Player();
 	std::string m_shipGrid[11][11];
 	//bool hasWon(bool victoryCheck);
-	//void getVictory()const;
+	short getShipTotal()const;
 	void playerInstructions();
 	void gridPlacement(int shipSize);
 	void playerShipChoice();
