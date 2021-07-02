@@ -152,44 +152,89 @@ void Player::gridPlacement(int shipSize) {
 }
 
 bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
-	int col = static_cast<int>(letter - 65);
+	int col = static_cast<int>(letter - 64);
 	int check{ col - shipSize };
+	short checkNumber{ number };
+	
+	bool freeSpaceUp{true};
+	bool freeSpaceDown{true};
+	bool freeSpaceLeft{true};
+	bool freeSpaceRight{true};
+
+	//need to keep working on this for game logic checks
 
 	//check left side
-	if ((col - shipSize) > 0 && m_shipGrid[number-1][col] != "X") {
-		for (int i{ shipSize }; i > 0; --i) {
-			if (m_shipGrid[i][col] == "X") {
-				return false;
+	if ((col - shipSize) > 0) {
+		if (m_shipGrid[number-1][col-1] != "X") {
+			for (int i{ shipSize }; i > 0; i--) {
+				if (m_shipGrid[number-1][i] == "X") {
+					freeSpaceLeft = false;
+					break;
+				}
 			}
 		}
+		else {
+			freeSpaceLeft = false;
+		}
 	}
-
+	else {
+		freeSpaceLeft = false;
+	}
+	std::cout << m_shipGrid[number - 1][col+1];
 	//check right side
-	if ((col + shipSize) < 10 && m_shipGrid[number - 1][col] != "X") {
-		for (int i{ 0 }; i < shipSize; ++i) {
-			if (m_shipGrid[i][col] == "X") {
-				return false;
+	if ((col + shipSize) < 11) {
+		if (m_shipGrid[number - 1][col+1] != "X") {
+			for (int i{ col }; i < shipSize; i++) {
+				if (m_shipGrid[number - 1][col] == "X") {
+					freeSpaceRight = false;
+					break;
+				}
 			}
+		}
+		else {
+			freeSpaceRight = false;
 		}
 	}
-	//check up
-	if ((number - shipSize > 0) && m_shipGrid[number - shipSize][col] != "X") {
-		for (int i{ 0 }; i < shipSize; ++i) {
-			if (m_shipGrid[number-1][i] == "X") {
-				return false;
-			}
-		}
-	}
-	//check down
-	if ((number + shipSize < 10) && m_shipGrid[number - shipSize][col] != "X") {
-		for (int i{ 0 }; i < shipSize; ++i) {
-			if (m_shipGrid[number - 1][i] == "X") {
-				return false;
-			}
-		}
+	else {
+		freeSpaceRight = false;
 	}
 
-	return true;
+	//check up
+	if (number - shipSize > 0) {
+		if (m_shipGrid[number - shipSize][col] != "X") {
+			for (int i{ shipSize }; i > shipSize; i--) {
+				if (m_shipGrid[number-1][i] == "X") {
+					freeSpaceUp = false;
+					break;
+				}
+			}
+		}
+	}
+	else {
+		freeSpaceUp = false;
+	}
+
+	//check down
+	if (number + shipSize < 11) {
+		if (m_shipGrid[number - shipSize][col] != "X") {
+			for (int i{ 0 }; i < shipSize; i++) {
+				if (m_shipGrid[number][i] == "X") {
+					freeSpaceDown = false;
+					break;
+				}
+			}
+		}
+	}
+	else {
+		freeSpaceDown = false;
+	}
+
+	if (freeSpaceUp == false && freeSpaceDown == false && freeSpaceLeft == false && freeSpaceRight == false) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }
 
 bool Player::checkValidSecondPlacement(char letter, short number, char previousLet, short previousNum, int shipSize) {

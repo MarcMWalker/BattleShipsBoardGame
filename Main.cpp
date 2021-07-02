@@ -26,12 +26,11 @@ int main() {
 	newBoard.printBoard();
 	Player player1;
 
-	while (player1.getShipTotal() > 1) {
+	while (player1.getShipTotal() > 0) {
 		player1.playerShipChoice();
 		loopChanges(player1, newBoard);
 		newBoard.updateBoard();
 		newBoard.printBoard();
 	}
-
 	return 0;
 }
