@@ -152,7 +152,7 @@ void Player::gridPlacement(int shipSize) {
 }
 
 bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
-	int col = static_cast<int>(letter - 64);
+	int col = static_cast<int>(letter - 63);
 	int check{ col - shipSize };
 	short checkNumber{ number };
 	
@@ -162,10 +162,11 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 	bool freeSpaceRight{true};
 
 	//need to keep working on this for game logic checks
-
+	//std::cout << m_shipGrid[number - 1][col - 1];
 	//check left side
+	//std::cout << col - shipSize;
 	if ((col - shipSize) > 0) {
-		if (m_shipGrid[number-1][col-1] != "X") {
+		if (m_shipGrid[number-1][(col-2)] != "X") {
 			for (int i{ shipSize }; i > 0; i--) {
 				if (m_shipGrid[number-1][i] == "X") {
 					freeSpaceLeft = false;
@@ -180,9 +181,11 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 	else {
 		freeSpaceLeft = false;
 	}
-	std::cout << m_shipGrid[number - 1][col+1];
+
+	//std::cout << m_shipGrid[number - 1][col+1];
 	//check right side
-	if ((col + shipSize) < 11) {
+	//std::cout << col + (shipSize-2);
+	if ((col + (shipSize-2)) < 11) {
 		if (m_shipGrid[number - 1][col+1] != "X") {
 			for (int i{ col }; i < shipSize; i++) {
 				if (m_shipGrid[number - 1][col] == "X") {
@@ -201,7 +204,7 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 
 	//check up
 	if (number - shipSize > 0) {
-		if (m_shipGrid[number - shipSize][col] != "X") {
+		if (m_shipGrid[number - shipSize][col-1] != "X") {
 			for (int i{ shipSize }; i > shipSize; i--) {
 				if (m_shipGrid[number-1][i] == "X") {
 					freeSpaceUp = false;
@@ -215,8 +218,8 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 	}
 
 	//check down
-	if (number + shipSize < 11) {
-		if (m_shipGrid[number - shipSize][col] != "X") {
+	if (number - shipSize < 11) {
+		if (m_shipGrid[number - shipSize][col-1] != "X") {
 			for (int i{ 0 }; i < shipSize; i++) {
 				if (m_shipGrid[number][i] == "X") {
 					freeSpaceDown = false;
@@ -239,9 +242,9 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 
 bool Player::checkValidSecondPlacement(char letter, short number, char previousLet, short previousNum, int shipSize) {
 	//bit messy atm, but works currently with left and right limits
-	int test{ previousLet - (letter+1) };
+	int test{ previousLet - (letter-1) };
 	int test2{ test = -test };
-	int test3{ previousNum - number };
+	int test3{ previousNum - (number + -1) };
 	int test4{ number - previousNum };
 
 	if ((test) == -shipSize) {
@@ -262,6 +265,14 @@ bool Player::checkValidSecondPlacement(char letter, short number, char previousL
 		return true;
 	}
 	else if ((test3 += 1) == shipSize) {
+		std::cout << "Ship size correct\n";
+		return true;
+	}
+	else if ((test3 -= 1) == -shipSize) {
+		std::cout << "Ship size correct\n";
+		return true;
+	}
+	else if ((test4 += 1) == shipSize) {
 		std::cout << "Ship size correct\n";
 		return true;
 	}
