@@ -152,7 +152,7 @@ void Player::gridPlacement(int shipSize) {
 }
 
 bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
-	int col = static_cast<int>(letter - 63);
+	int col = static_cast<int>(letter - 64);
 	int check{ col - shipSize };
 	short checkNumber{ number };
 	
@@ -166,7 +166,7 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 	//check left side
 	//std::cout << col - shipSize;
 	if ((col - shipSize) > 0) {
-		if (m_shipGrid[number-1][(col-2)] != "X") {
+		if (m_shipGrid[number-1][col] != "X") {
 			for (int i{ shipSize }; i > 0; i--) {
 				if (m_shipGrid[number-1][i] == "X") {
 					freeSpaceLeft = false;
@@ -186,9 +186,9 @@ bool Player::checkValidFirstPlacement(char letter, short number, int shipSize) {
 	//check right side
 	//std::cout << col + (shipSize-2);
 	if ((col + (shipSize-2)) < 11) {
-		if (m_shipGrid[number - 1][col+1] != "X") {
+		if (m_shipGrid[number - 1][col] != "X") {
 			for (int i{ col }; i < shipSize; i++) {
-				if (m_shipGrid[number - 1][col] == "X") {
+				if (m_shipGrid[number - 1][i] == "X") {
 					freeSpaceRight = false;
 					break;
 				}
